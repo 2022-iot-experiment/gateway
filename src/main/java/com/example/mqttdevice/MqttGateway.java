@@ -12,13 +12,13 @@ public interface MqttGateway {
 }
 
 @Component
-@MessagingGateway(defaultRequestChannel = "mqttHumidityOutboundChannel")
-interface MqttHumidityGateway {
+@MessagingGateway(defaultRequestChannel = "mqttBathroomLightOutboundChannel")
+interface MqttBathroomLightGateway {
     void sendToMqtt(String data, @Header(MqttHeaders.TOPIC) String topic);
 }
 
 @Component
-@MessagingGateway(defaultRequestChannel = "mqttTemperatureOutboundChannel")
-interface MqttTemperatureGateway {
+@MessagingGateway(defaultRequestChannel = "mqttBathroomMotionOutboundChannel")
+interface MqttBathroomMotionGateway {
     void sendToMqtt(String data, @Header(MqttHeaders.TOPIC) String topic);
 }

@@ -64,52 +64,52 @@ public class MqttConfig {
     }
 
     @Bean
-    public MqttPahoClientFactory mqttHumidityClientFactory() {
+    public MqttPahoClientFactory mqttBathroomLightClientFactory() {
         DefaultMqttPahoClientFactory factory = new DefaultMqttPahoClientFactory();
         MqttConnectOptions options = new MqttConnectOptions();
         options.setServerURIs(new String[] { "tcp://121.37.81.22:1884" });
-        options.setUserName("3oZ5TFGN6EwjeE67iNbI");
+        options.setUserName("bathroom/ambience/light");
         factory.setConnectionOptions(options);
         return factory;
     }
 
     @Bean
-    @ServiceActivator(inputChannel = "mqttHumidityOutboundChannel")
+    @ServiceActivator(inputChannel = "mqttBathroomLightOutboundChannel")
     public MessageHandler humidityMessageHandler() {
-        MqttPahoMessageHandler messageHandler = new MqttPahoMessageHandler("humidityClient",
-                mqttHumidityClientFactory());
+        MqttPahoMessageHandler messageHandler = new MqttPahoMessageHandler("bathroomLightClient",
+                mqttBathroomLightClientFactory());
         messageHandler.setAsync(true);
         messageHandler.setDefaultQos(1);
         return messageHandler;
     }
 
     @Bean
-    public MessageChannel mqttHumidityOutboundChannel() {
+    public MessageChannel mqttBathroomLightOutboundChannel() {
         return new DirectChannel();
     }
 
     @Bean
-    public MqttPahoClientFactory mqttTemperatureClientFactory() {
+    public MqttPahoClientFactory mqttBathroomMotionClientFactory() {
         DefaultMqttPahoClientFactory factory = new DefaultMqttPahoClientFactory();
         MqttConnectOptions options = new MqttConnectOptions();
         options.setServerURIs(new String[] { "tcp://121.37.81.22:1884" });
-        options.setUserName("ZA6Iyof8cSMFwfAyYOAe");
+        options.setUserName("bathroom/ambience/motion");
         factory.setConnectionOptions(options);
         return factory;
     }
 
     @Bean
-    @ServiceActivator(inputChannel = "mqttTemperatureOutboundChannel")
+    @ServiceActivator(inputChannel = "mqttBathroomMotionOutboundChannel")
     public MessageHandler temperatureMessageHandler() {
-        MqttPahoMessageHandler messageHandler = new MqttPahoMessageHandler("humidityClient",
-                mqttTemperatureClientFactory());
+        MqttPahoMessageHandler messageHandler = new MqttPahoMessageHandler("bathroomMotionClient",
+                mqttBathroomMotionClientFactory());
         messageHandler.setAsync(true);
         messageHandler.setDefaultQos(1);
         return messageHandler;
     }
 
     @Bean
-    public MessageChannel mqttTemperatureOutboundChannel() {
+    public MessageChannel mqttBathroomMotionOutboundChannel() {
         return new DirectChannel();
     }
 }
