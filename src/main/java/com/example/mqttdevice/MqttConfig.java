@@ -112,4 +112,54 @@ public class MqttConfig {
     public MessageChannel mqttBathroomMotionOutboundChannel() {
         return new DirectChannel();
     }
+
+    @Bean
+    public MqttPahoClientFactory mqttBathroomHumidiyClientFactory() {
+        DefaultMqttPahoClientFactory factory = new DefaultMqttPahoClientFactory();
+        MqttConnectOptions options = new MqttConnectOptions();
+        options.setServerURIs(new String[] { "tcp://121.37.81.22:1884" });
+        options.setUserName("bathroom/ambience/humidity");
+        factory.setConnectionOptions(options);
+        return factory;
+    }
+
+    @Bean
+    @ServiceActivator(inputChannel = "mqttBathroomHumidityOutboundChannel")
+    public MessageHandler bathroomHumidityMessageHandler() {
+        MqttPahoMessageHandler messageHandler = new MqttPahoMessageHandler("bathroomHumidityClient",
+                mqttBathroomHumidiyClientFactory());
+        messageHandler.setAsync(true);
+        messageHandler.setDefaultQos(1);
+        return messageHandler;
+    }
+
+    @Bean
+    public MessageChannel mqttBathroomHumidityOutboundChannel() {
+        return new DirectChannel();
+    }
+
+    @Bean
+    public MqttPahoClientFactory mqttBathroomTemperatureClientFactory() {
+        DefaultMqttPahoClientFactory factory = new DefaultMqttPahoClientFactory();
+        MqttConnectOptions options = new MqttConnectOptions();
+        options.setServerURIs(new String[] { "tcp://121.37.81.22:1884" });
+        options.setUserName("bathroom/ambience/temperature");
+        factory.setConnectionOptions(options);
+        return factory;
+    }
+
+    @Bean
+    @ServiceActivator(inputChannel = "mqttBathroomTemperatureOutboundChannel")
+    public MessageHandler bathroomTemperatureMessageHandler() {
+        MqttPahoMessageHandler messageHandler = new MqttPahoMessageHandler("bathroomTemperatureClient",
+                mqttBathroomTemperatureClientFactory());
+        messageHandler.setAsync(true);
+        messageHandler.setDefaultQos(1);
+        return messageHandler;
+    }
+
+    @Bean
+    public MessageChannel mqttBathroomTemperatureOutboundChannel() {
+        return new DirectChannel();
+    }
 }

@@ -22,3 +22,15 @@ interface MqttBathroomLightGateway {
 interface MqttBathroomMotionGateway {
     void sendToMqtt(String data, @Header(MqttHeaders.TOPIC) String topic);
 }
+
+@Component
+@MessagingGateway(defaultRequestChannel = "mqttBathroomHumidityOutboundChannel")
+interface MqttBathroomHumidityGateway {
+    void sendToMqtt(String data, @Header(MqttHeaders.TOPIC) String topic);
+}
+
+@Component
+@MessagingGateway(defaultRequestChannel = "mqttBathroomTemperatureOutboundChannel")
+interface MqttBathroomTemperatureGateway {
+    void sendToMqtt(String data, @Header(MqttHeaders.TOPIC) String topic);
+}
