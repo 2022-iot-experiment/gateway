@@ -11,9 +11,6 @@ import com.example.protocon.core.Response;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import lombok.extern.slf4j.Slf4j;
-
-@Slf4j
 @Service
 public class GatewayService {
     @Autowired
@@ -28,7 +25,6 @@ public class GatewayService {
         });
 
         gateway.registerRequestHandler((short) 0x0004, (client, request) -> {
-            log.info("收到请求: ", request.toString());
             return new Response(Instant.now().getEpochSecond(), (byte) 0x00, "{}");
         });
     }
