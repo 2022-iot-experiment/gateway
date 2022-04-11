@@ -52,6 +52,9 @@ public class GatewayService {
     @Autowired
     MqttBathroomTemperatureGateway bathroomTemperatureGateway;
 
+    @Autowired
+    MqttBathroomWashingmachineGateway bathroomWashingmachineGateway;
+
     @PostConstruct
     void init() {
         gateway.init(new ArrayList<>());
@@ -85,6 +88,12 @@ public class GatewayService {
                             break;
                         case 6223:
                             bathroomTemperatureGateway.sendToMqtt(
+                                    objectMapper
+                                            .writeValueAsString(new SensorData(item.get(1), item.get(2).intValue())),
+                                    "v1/devices/me/telemetry");
+                            break;
+                        case 6636:
+                            bathroomWashingmachineGateway.sendToMqtt(
                                     objectMapper
                                             .writeValueAsString(new SensorData(item.get(1), item.get(2).intValue())),
                                     "v1/devices/me/telemetry");

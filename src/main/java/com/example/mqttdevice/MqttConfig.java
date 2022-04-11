@@ -162,4 +162,29 @@ public class MqttConfig {
     public MessageChannel mqttBathroomTemperatureOutboundChannel() {
         return new DirectChannel();
     }
+
+    @Bean
+    public MqttPahoClientFactory mqttBathroomWashingmachineClientFactory() {
+        DefaultMqttPahoClientFactory factory = new DefaultMqttPahoClientFactory();
+        MqttConnectOptions options = new MqttConnectOptions();
+        options.setServerURIs(new String[] { "tcp://121.37.81.22:1884" });
+        options.setUserName("bathroom/washingmachine/current");
+        factory.setConnectionOptions(options);
+        return factory;
+    }
+
+    @Bean
+    @ServiceActivator(inputChannel = "mqttBathroomWashingmachineOutboundChannel")
+    public MessageHandler bathroomWashingmachineMessageHandler() {
+        MqttPahoMessageHandler messageHandler = new MqttPahoMessageHandler("bathroomWashingmachineClient",
+                mqttBathroomWashingmachineClientFactory());
+        messageHandler.setAsync(true);
+        messageHandler.setDefaultQos(1);
+        return messageHandler;
+    }
+
+    @Bean
+    public MessageChannel mqttBathroomWashingmachineOutboundChannel() {
+        return new DirectChannel();
+    }
 }
