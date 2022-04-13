@@ -40,3 +40,9 @@ interface MqttBathroomTemperatureGateway {
 interface MqttBathroomWashingmachineGateway {
     void sendToMqtt(String data, @Header(MqttHeaders.TOPIC) String topic);
 }
+
+@Component
+@MessagingGateway(defaultRequestChannel = "mqttKitchenMotionOutboundChannel")
+interface MqttKitchenMotionGateway {
+    void sendToMqtt(String data, @Header(MqttHeaders.TOPIC) String topic);
+}

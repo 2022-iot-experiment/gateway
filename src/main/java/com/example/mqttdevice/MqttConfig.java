@@ -187,4 +187,29 @@ public class MqttConfig {
     public MessageChannel mqttBathroomWashingmachineOutboundChannel() {
         return new DirectChannel();
     }
+
+    @Bean
+    public MqttPahoClientFactory mqttKitchenMotionClientFactory() {
+        DefaultMqttPahoClientFactory factory = new DefaultMqttPahoClientFactory();
+        MqttConnectOptions options = new MqttConnectOptions();
+        options.setServerURIs(new String[] { "tcp://121.37.81.22:1884" });
+        options.setUserName("kitchen/ambience/motion");
+        factory.setConnectionOptions(options);
+        return factory;
+    }
+
+    @Bean
+    @ServiceActivator(inputChannel = "mqttKitchenMotionOutboundChannel")
+    public MessageHandler kitchenMotionMessageHandler() {
+        MqttPahoMessageHandler messageHandler = new MqttPahoMessageHandler("kitchenMotionClient",
+                mqttKitchenMotionClientFactory());
+        messageHandler.setAsync(true);
+        messageHandler.setDefaultQos(1);
+        return messageHandler;
+    }
+
+    @Bean
+    public MessageChannel kitchenMotionOutboundChannel() {
+        return new DirectChannel();
+    }
 }
